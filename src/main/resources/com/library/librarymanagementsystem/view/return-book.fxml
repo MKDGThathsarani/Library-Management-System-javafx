@@ -1,14 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<BorderPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.library.librarymanagementsystem.controller.ReturnBookController"
+            prefWidth="900" prefHeight="650">
 
-</AnchorPane>
+    <top>
+        <HBox style="-fx-background-color: #1e3c72; -fx-padding: 15;" spacing="15" alignment="CENTER_LEFT">
+            <Button text="⬅ Back" styleClass="btn-secondary" onAction="#goBack"/>
+            <Label text="Return Book" style="-fx-text-fill: white; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox spacing="20" style="-fx-padding: 40;">
+
+            <HBox spacing="15" alignment="CENTER_LEFT">
+                <Label text="Search Borrowed Book:" styleClass="form-label" prefWidth="180"/>
+                <ComboBox fx:id="borrowedBookCombo" promptText="Select book to return" prefWidth="350"/>
+                <Button text="Load" styleClass="btn-primary" onAction="#handleLoad"/>
+            </HBox>
+
+            <Separator/>
+
+            <GridPane hgap="20" vgap="15">
+                <Label text="Member ID:" styleClass="form-label" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label fx:id="memberIdLabel" text="-" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                <Label text="Member Name:" styleClass="form-label" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label fx:id="memberNameLabel" text="-" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                <Label text="Book Title:" styleClass="form-label" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label fx:id="bookTitleLabel" text="-" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                <Label text="Borrowed Date:" styleClass="form-label" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <Label fx:id="borrowedDateLabel" text="-" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                <Label text="Due Date:" styleClass="form-label" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Label fx:id="dueDateLabel" text="-" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+
+                <Label text="Return Date:" styleClass="form-label" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+                <DatePicker fx:id="returnDatePicker" GridPane.rowIndex="5" GridPane.columnIndex="1" prefWidth="250"/>
+            </GridPane>
+
+            <Label fx:id="overdueStatusLabel" text="" style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+
+            <HBox spacing="15">
+                <Button text="Return Book" styleClass="btn-primary" onAction="#handleReturn" prefWidth="150"/>
+                <Button text="Clear" styleClass="btn-secondary" onAction="#handleClear" prefWidth="150"/>
+            </HBox>
+
+        </VBox>
+    </center>
+</BorderPane>
