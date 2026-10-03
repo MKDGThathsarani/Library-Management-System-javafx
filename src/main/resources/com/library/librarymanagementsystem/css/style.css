@@ -1,0 +1,111 @@
+.root {
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-background-color: #f4f6f9;
+}
+
+/* Login Page */
+.login-container {
+    -fx-background-color: linear-gradient(to bottom right, #1e3c72, #2a5298);
+}
+
+.login-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 5);
+    -fx-padding: 40;
+}
+
+.login-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3c72;
+}
+
+/* Sidebar / Dashboard */
+.sidebar {
+    -fx-background-color: #1e3c72;
+    -fx-padding: 20;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 12 20;
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+    -fx-pref-width: 200;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #2a5298;
+}
+
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 8, 0, 0, 2);
+    -fx-padding: 20;
+    -fx-min-width: 180;
+    -fx-min-height: 100;
+}
+
+.stat-number {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3c72;
+}
+
+.stat-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666;
+}
+
+/* Buttons */
+.btn-primary {
+    -fx-background-color: #1e3c72;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 25;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #2a5298;
+}
+
+.btn-danger {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.btn-secondary {
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+/* Form */
+.form-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #333;
+    -fx-font-weight: bold;
+}
+
+.text-field, .password-field, .combo-box, .date-picker {
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #ccc;
+    -fx-padding: 8;
+}
+
+.page-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e3c72;
+}
