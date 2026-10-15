@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import com.library.librarymanagementsystem.util.DatabaseUtil;
 
 public class Main extends Application {
 
@@ -12,6 +13,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        DatabaseUtil.initializeDatabase();
+
         primaryStage = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(
                 Main.class.getResource("/com/library/librarymanagementsystem/view/login.fxml")
