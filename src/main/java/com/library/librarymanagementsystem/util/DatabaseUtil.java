@@ -4,19 +4,25 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DatabaseUtil {
 
+    private static final Logger LOGGER = Logger.getLogger(DatabaseUtil.class.getName());
     //Data file path
     private static final String DB_URL = "jdbc:sqlite:library.db";
 
+    private DatabaseUtil() {
+        // Prevent instantiation
+    }
     //getConnection() method
-    public static Connection getConnection() throws SQLException {
+    public static Connection getConnection()  throws SQLException{
         return DriverManager.getConnection(DB_URL);
     }
 
     //Table hadana method eka(app start + load)
-    public static void initializeDatabase() {
+    public static void initializeDatabase(){
         //user table
         String userTable = "CREATE TABLE IF NOT EXISTS users ("
                 + "username TEXT PRIMARY KEY, "
@@ -48,23 +54,23 @@ public class DatabaseUtil {
                 + "due_date TEXT, "
                 + "return_date TEXT, "
                 + "status TEXT)";
-        try (Connection conn = getConnection();
-             Statement stmt = conn.createStatement()) {
+try(Connection conn = getConnection();
+        Statement stmt = conn.createStatement()){
 
-            //Table 4
-            stmt.execute(userTable);
-            stmt.execute(bookTable);
-            stmt.execute(membersTable);
-            stmt.execute(borrowTable);
+    //Table 4
+    stmt.execute(userTable);
+    stmt.execute(bookTable);
+    stmt.execute(membersTable);
+    stmt.execute(borrowTable);
 
-            //Default admin user
-            String insertAdmin = "INSERT OR IGNOR INTO users(username, password) "
-                    + "VALUES ('admin' , 'admin123')";
-            stmt.execute(insertAdmin);
+    //Default admin user
+    String insertAdmin = "INSERT OR IGNOR INTO users(username, password) "
+            + "VALUES ('admin' , 'admin123')";
+    stmt.execute(insertAdmin);
 
-            System.out.println("Database initialized successfully.");
-        } catch (SQLException e) {
-            System.out.println("Database initialized faiked.");
+    LOGGER.info("Database initialized successfully.");
+            }catch (SQLException e){
+    LOGGER.log(Level.SEVERE, "Database initialization failed.", e);
             e.printStackTrace();
         }
     }
