@@ -1,5 +1,7 @@
 package com.library.librarymanagementsystem.controller;
 
+import com.library.librarymanagementsystem.dao.BookDAO;
+import com.library.librarymanagementsystem.model.Book;
 import com.library.librarymanagementsystem.util.NavigationUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -27,6 +29,7 @@ public class AddBookController implements Initializable {
 
     @FXML
     public void handleAddBook() {
+        //Validation
         if (bookIdField.getText().isEmpty() || titleField.getText().isEmpty()
                 || authorField.getText().isEmpty() || categoryCombo.getValue() == null
                 || yearField.getText().isEmpty() || quantityField.getText().isEmpty()) {
@@ -34,17 +37,38 @@ public class AddBookController implements Initializable {
             return;
         }
 
+        int year,qty;
+
         try {
-            int year = Integer.parseInt(yearField.getText().trim());
-            int qty = Integer.parseInt(quantityField.getText().trim());
+            year = Integer.parseInt(yearField.getText().trim());
+            qty = Integer.parseInt(quantityField.getText().trim());
             if (year < 1000 || year > 2100 || qty <= 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
             showAlert(Alert.AlertType.ERROR, "Invalid Input", "Year and Quantity must be valid numbers.");
             return;
         }
 
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Book added successfully!");
-        handleClear();
+        //Book object
+        Book book = new Book(
+                bookIdField.getText().trim(),
+                titleField.getText().trim(),
+                authorField.getText().trim(),
+                categoryCombo.getValue(),
+                year,
+                qty
+        );
+
+        //Database save
+        BookDAO bookDAO = new BookDAO();
+        boolean success = bookDAO.addBook(book);
+
+        if (success){
+            showAlert(Alert.AlertType.INFORMATION,"Success","Book added sucessfully!");
+            handleClear();
+        }else {
+            showAlert(Alert.AlertType.ERROR,"Error", "Failed to add book. Book ID may already exist.");
+        }
+
     }
 
     @FXML
