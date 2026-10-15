@@ -22,7 +22,7 @@ public class BookDAO  {
             ps.setString(3,book.getAuthor());
             ps.setString(4,book.getCategory());
             ps.setInt(5,book.getYear());
-            ps.setString(6,book.getQuantity());
+            ps.setInt(6,book.getQuantity());
 
             return ps.executeUpdate() > 0;
         }catch (SQLException e){
