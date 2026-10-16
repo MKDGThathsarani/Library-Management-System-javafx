@@ -1,5 +1,7 @@
 package com.library.librarymanagementsystem.controller;
 
+import com.library.librarymanagementsystem.dao.MemberDAO;
+import com.library.librarymanagementsystem.model.Member;
 import com.library.librarymanagementsystem.util.NavigationUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -33,8 +35,25 @@ public class AddMemberController {
             return;
         }
 
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Member registered successfully!");
-        handleClear();
+        //member Object
+        Member member = new Member(
+                memberIdField.getText().trim(),
+                nameField.getText().trim(),
+                email,
+                phone,
+                addressField.getText().trim()
+        );
+
+        //save the database
+        MemberDAO memberDAO = new MemberDAO();
+        boolean success = memberDAO.addMember(member);
+
+        if (success){
+            showAlert(Alert.AlertType.INFORMATION,"Success", "Member registered successfully!");
+            handleClear();
+        }else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to register mrmber. Member ID may already exist.");
+        }
     }
 
     @FXML

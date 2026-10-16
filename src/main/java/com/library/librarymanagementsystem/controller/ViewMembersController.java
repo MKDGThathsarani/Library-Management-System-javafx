@@ -1,5 +1,6 @@
 package com.library.librarymanagementsystem.controller;
 
+import com.library.librarymanagementsystem.dao.MemberDAO;
 import com.library.librarymanagementsystem.model.Member;
 import com.library.librarymanagementsystem.util.NavigationUtil;
 import javafx.collections.FXCollections;
@@ -35,12 +36,15 @@ public class ViewMembersController implements Initializable {
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         colAction.setCellValueFactory(new PropertyValueFactory<>("memberId"));
 
-        // Sample data
-        members.addAll(
-                new Member("M001", "Kamal Perera", "kamal@mail.com", "0771234567", "Colombo"),
-                new Member("M002", "Nimal Silva", "nimal@mail.com", "0712345678", "Kandy"),
-                new Member("M003", "Sara Fernando", "sara@mail.com", "0765432198", "Galle")
-        );
+        // Database එකෙන් members load කරන්න
+        loadMembers();
+    }
+
+    // Database එකෙන් members load කරන method එක
+    private void loadMembers() {
+        MemberDAO memberDAO = new MemberDAO();
+        members.clear();
+        members.addAll(memberDAO.getAllMembers());
         membersTable.setItems(members);
     }
 
@@ -83,9 +87,19 @@ public class ViewMembersController implements Initializable {
         confirm.setTitle("Delete");
         confirm.setHeaderText(null);
         confirm.setContentText("Delete member " + selected.getName() + "?");
+
         Optional<ButtonType> r = confirm.showAndWait();
         if (r.isPresent() && r.get() == ButtonType.OK) {
-            members.remove(selected);
+            // Database එකෙන් delete කරන්න
+            MemberDAO memberDAO = new MemberDAO();
+            boolean success = memberDAO.deleteMember(selected.getMemberId());
+
+            if (success) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Member deleted successfully!");
+                loadMembers(); // Table එක refresh කරන්න
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete member.");
+            }
         }
     }
 
