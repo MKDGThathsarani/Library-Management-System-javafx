@@ -52,7 +52,7 @@ public class AddMemberController {
             showAlert(Alert.AlertType.INFORMATION,"Success", "Member registered successfully!");
             handleClear();
         }else {
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to register mrmber. Member ID may already exist.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to register member. Member ID may already exist.");
         }
     }
 

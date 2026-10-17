@@ -73,7 +73,25 @@ public class ViewMembersController implements Initializable {
             showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a member to edit.");
             return;
         }
-        showAlert(Alert.AlertType.INFORMATION, "Edit", "Edit member: " + selected.getName());
+        TextInputDialog dialog = new TextInputDialog(selected.getName());
+        dialog.setTitle("Edit Member");
+        dialog.setHeaderText("Editing: " + selected.getMemberId());
+        dialog.setContentText("Enter new Full Name:");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent() && !result.get().trim().isEmpty()) {
+            selected.setName(result.get().trim());
+
+            MemberDAO memberDAO = new MemberDAO();
+            boolean success = memberDAO.updateMember(selected);
+
+            if (success) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Member updated successfully!");
+                loadMembers();
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to update member.");
+            }
+        }
     }
 
     @FXML
