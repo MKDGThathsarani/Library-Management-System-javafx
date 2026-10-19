@@ -26,29 +26,23 @@
 
     <!-- Main Content -->
     <center>
-        <VBox spacing="25" style="-fx-padding: 40;">
-            <Label text="Dashboard Overview" styleClass="page-title"/>
-
-            <HBox spacing="20">
-                <VBox styleClass="stat-card" alignment="CENTER">
-                    <Label text="120" styleClass="stat-number"/>
-                    <Label text="Total Books" styleClass="stat-label"/>
-                </VBox>
-                <VBox styleClass="stat-card" alignment="CENTER">
-                    <Label text="45" styleClass="stat-number"/>
-                    <Label text="Total Members" styleClass="stat-label"/>
-                </VBox>
-                <VBox styleClass="stat-card" alignment="CENTER">
-                    <Label text="18" styleClass="stat-number"/>
-                    <Label text="Borrowed" styleClass="stat-label"/>
-                </VBox>
-                <VBox styleClass="stat-card" alignment="CENTER">
-                    <Label text="5" styleClass="stat-number" style="-fx-text-fill: #e74c3c;"/>
-                    <Label text="Overdue" styleClass="stat-label"/>
-                </VBox>
-            </HBox>
-
-            <Label text="Welcome to the Library Management System." style="-fx-font-size: 14px; -fx-text-fill: #555;"/>
-        </VBox>
+        <HBox spacing="20">
+            <VBox styleClass="stat-card" alignment="CENTER">
+                <Label fx:id="totalBooksLabel" text="0" styleClass="stat-number"/>
+                <Label text="Total Books" styleClass="stat-label"/>
+            </VBox>
+            <VBox styleClass="stat-card" alignment="CENTER">
+                <Label fx:id="totalMembersLabel" text="0" styleClass="stat-number"/>
+                <Label text="Total Members" styleClass="stat-label"/>
+            </VBox>
+            <VBox styleClass="stat-card" alignment="CENTER">
+                <Label fx:id="borrowedLabel" text="0" styleClass="stat-number"/>
+                <Label text="Borrowed" styleClass="stat-label"/>
+            </VBox>
+            <VBox styleClass="stat-card" alignment="CENTER">
+                <Label fx:id="overdueLabel" text="0" styleClass="stat-number" style="-fx-text-fill: #e74c3c;"/>
+                <Label text="Overdue" styleClass="stat-label"/>
+            </VBox>
+        </HBox>
     </center>
 </BorderPane>
