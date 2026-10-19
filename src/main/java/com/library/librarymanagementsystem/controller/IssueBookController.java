@@ -1,5 +1,6 @@
 package com.library.librarymanagementsystem.controller;
 
+import com.library.librarymanagementsystem.dao.BorrowDAO;
 import com.library.librarymanagementsystem.util.NavigationUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -36,8 +37,20 @@ public class IssueBookController implements Initializable {
             showAlert(Alert.AlertType.ERROR, "Invalid Date", "Due date must be after issue date.");
             return;
         }
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Book issued successfully!");
-        handleClear();
+        String memberId = memberCombo.getValue().split(" ")[0];
+        String bookId = bookCombo.getValue().split(" ")[0];
+
+        BorrowDAO dao = new BorrowDAO();
+        boolean success = dao.issueBook(memberId, bookId,
+                issueDatePicker.getValue().toString(),
+                dueDatePicker.getValue().toString());
+
+        if (success) {
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Book issued successfully!");
+            handleClear();
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to issue book.");
+        }
     }
 
     @FXML
