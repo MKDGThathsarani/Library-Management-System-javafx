@@ -1,5 +1,6 @@
 package com.library.librarymanagementsystem.controller;
 
+import com.library.librarymanagementsystem.dao.BorrowDAO;
 import com.library.librarymanagementsystem.model.BorrowRecord;
 import com.library.librarymanagementsystem.util.NavigationUtil;
 import javafx.collections.FXCollections;
@@ -34,15 +35,14 @@ public class HistoryController implements Initializable {
         colReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Sample data
-        records.addAll(
-                new BorrowRecord("M001", "Java Basics", "2024-01-15", "2024-01-29", "2024-01-25", "Returned"),
-                new BorrowRecord("M002", "DBMS Concepts", "2024-02-01", "2024-02-15", "-", "Borrowed"),
-                new BorrowRecord("M003", "Computer Networks", "2024-01-10", "2024-01-24", "-", "Overdue"),
-                new BorrowRecord("M001", "Data Structures", "2024-02-10", "2024-02-24", "2024-02-20", "Returned"),
-                new BorrowRecord("M002", "Operating Systems", "2024-01-05", "2024-01-19", "-", "Overdue")
-        );
+        loadHistory(); // මේක initialize එක ඇතුලේ කතා කරනවා
+    }
 
+    // මේ method එක initialize එකට පිටින් (class එක ඇතුලේ) තියෙන්න ඕනේ!
+    private void loadHistory() {
+        BorrowDAO dao = new BorrowDAO();
+        records.clear();
+        records.addAll(dao.getAllRecords());
         historyTable.setItems(records);
     }
 
