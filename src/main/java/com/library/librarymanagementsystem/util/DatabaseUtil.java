@@ -10,34 +10,35 @@ import java.util.logging.Logger;
 public class DatabaseUtil {
 
     private static final Logger LOGGER = Logger.getLogger(DatabaseUtil.class.getName());
-    //Data file path
+    // Data file path
     private static final String DB_URL = "jdbc:sqlite:library.db";
 
     private DatabaseUtil() {
         // Prevent instantiation
     }
-    //getConnection() method
-    public static Connection getConnection()  throws SQLException{
+
+    // getConnection() method
+    public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL);
     }
 
-    //Table hadana method eka(app start + load)
-    public static void initializeDatabase(){
-        //user table
+    // Table හදන method එක (app start + load)
+    public static void initializeDatabase() {
+        // user table
         String userTable = "CREATE TABLE IF NOT EXISTS users ("
                 + "username TEXT PRIMARY KEY, "
                 + "password TEXT NOT NULL)";
 
-        //book table
+        // book table
         String bookTable = "CREATE TABLE IF NOT EXISTS books ("
                 + "book_id TEXT PRIMARY KEY, "
                 + "title TEXT NOT NULL, "
-                + "author TEXT,"
+                + "author TEXT, "
                 + "category TEXT, "
                 + "year INTEGER, "
                 + "quantity INTEGER)";
 
-        // members table - members සඳහා
+        // members table
         String membersTable = "CREATE TABLE IF NOT EXISTS members ("
                 + "member_id TEXT PRIMARY KEY, "
                 + "name TEXT NOT NULL, "
@@ -45,7 +46,7 @@ public class DatabaseUtil {
                 + "phone TEXT, "
                 + "address TEXT)";
 
-        // borrow_records table - issue/return history සඳහා
+        // borrow_records table
         String borrowTable = "CREATE TABLE IF NOT EXISTS borrow_records ("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + "member_id TEXT, "
@@ -54,26 +55,25 @@ public class DatabaseUtil {
                 + "due_date TEXT, "
                 + "return_date TEXT, "
                 + "status TEXT)";
-try(Connection conn = getConnection();
-        Statement stmt = conn.createStatement()){
 
-    //Table 4
-    stmt.execute(userTable);
-    stmt.execute(bookTable);
-    stmt.execute(membersTable);
-    stmt.execute(borrowTable);
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement()) {
 
-    //Default admin user
-    String insertAdmin = "INSERT OR IGNOR INTO users(username, password) "
-            + "VALUES ('admin' , 'admin123')";
-    stmt.execute(insertAdmin);
+            // Tables 4 හදනවා
+            stmt.execute(userTable);
+            stmt.execute(bookTable);
+            stmt.execute(membersTable);
+            stmt.execute(borrowTable);
 
-    LOGGER.info("Database initialized successfully.");
-            }catch (SQLException e){
-    LOGGER.log(Level.SEVERE, "Database initialization failed.", e);
+            // Default admin user (හැම වෙලාවකම අලුතෙන් දානවා)
+            stmt.execute("DELETE FROM users WHERE username = 'admin'"); // පරණ එකක් තියෙනවා නම් අයින් කරනවා
+            String insertAdmin = "INSERT INTO users (username, password) VALUES ('admin', 'admin123')";
+            stmt.execute(insertAdmin);
+
+            LOGGER.info("Database initialized successfully.");
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Database initialization failed.", e);
             e.printStackTrace();
         }
     }
 }
-
-
