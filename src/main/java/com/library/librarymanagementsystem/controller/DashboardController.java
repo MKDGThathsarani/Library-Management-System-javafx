@@ -3,6 +3,7 @@ package com.library.librarymanagementsystem.controller;
 import com.library.librarymanagementsystem.util.DatabaseUtil;
 import com.library.librarymanagementsystem.util.NavigationUtil;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -10,7 +11,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class DashboardController {
+public class DashboardController implements Initializable {
 
     @FXML private Label totalBooksLabel, totalMembersLabel, borrowedLabel, overdueLabel;
 
