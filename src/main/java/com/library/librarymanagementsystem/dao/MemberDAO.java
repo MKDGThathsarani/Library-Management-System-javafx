@@ -13,8 +13,8 @@ import java.util.List;
 public class MemberDAO {
     // 1.Membor added to data base mrthod
     public boolean addMember(Member member){
-        String sql = "INSERT INTO members (member_id, name, email, phone, addresss)"
-                + "VALUES (?,?,?,?,?)"
+        String sql = "INSERT INTO members (member_id, name, email, phone, address) "
+                + "VALUES (?,?,?,?,?)";
 
                 try (Connection conn = DatabaseUtil.getConnection();
         PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -31,7 +31,7 @@ public class MemberDAO {
                 }
     }
 
-    //All member method
+    //2.All member method
     public List<Member> getAllMembers(){
         List<Member> members = new ArrayList<>();
         String sql = "SELECT * FROM members";
@@ -56,9 +56,9 @@ public class MemberDAO {
         return members;
     }
 
-    //Member details update karana method
+    //3.Member details update karana method
     public boolean updateMember(Member member){
-        String sql = "UPDATE member SET name = ?, email = ?, phone = ?, address =?, " + "WHERE member_id = ?";
+        String sql = "UPDATE members SET name = ?, email = ?, phone = ?, address =?" + "WHERE member_id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql)){
@@ -85,7 +85,7 @@ public class MemberDAO {
 
             ps.setString(1,memberId);
 
-            return ps.executeUpdate() > 0
+            return ps.executeUpdate() > 0;
         }catch (SQLException e) {
             e.printStackTrace();
             return false;
