@@ -1,13 +1,15 @@
 package com.library.librarymanagementsystem.controller;
 
+import com.library.librarymanagementsystem.dao.BookDAO;
+import com.library.librarymanagementsystem.model.Book;
 import com.library.librarymanagementsystem.util.NavigationUtil;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ReturnBookController implements Initializable {
@@ -23,12 +25,16 @@ public class ReturnBookController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        borrowedBookCombo.setItems(FXCollections.observableArrayList(
-                "B001 - Java Basics",
-                "B002 - DBMS Concepts",
-                "B003 - Computer Networks"
-        ));
         returnDatePicker.setValue(LocalDate.now());
+
+        // Database එකෙන් පොත් ටික ලෝඩ් කරන්න
+        BookDAO bookDAO = new BookDAO();
+        List<Book> books = bookDAO.getAllBooks();
+
+        borrowedBookCombo.getItems().clear(); // පරණ දේවල් අයින් කරන්න
+        for (Book b : books) {
+            borrowedBookCombo.getItems().add(b.getBookId() + " - " + b.getTitle());
+        }
     }
 
     @FXML
@@ -38,7 +44,7 @@ public class ReturnBookController implements Initializable {
             return;
         }
 
-        // Sample data (real application එකේ database එකෙන් load කරන්න)
+
         memberIdLabel.setText("M001");
         memberNameLabel.setText("Kamal Perera");
         bookTitleLabel.setText(borrowedBookCombo.getValue());
@@ -64,6 +70,10 @@ public class ReturnBookController implements Initializable {
             showAlert(Alert.AlertType.WARNING, "Validation", "Please load a book and select return date.");
             return;
         }
+
+        // ඔබට මේකත් Database එකට සම්බන්ධ කරන්න පුළුවන්.
+        // දැනට අපි ඒක කරන්නේ නෑ.
+
         showAlert(Alert.AlertType.INFORMATION, "Success", "Book returned successfully!");
         handleClear();
     }
