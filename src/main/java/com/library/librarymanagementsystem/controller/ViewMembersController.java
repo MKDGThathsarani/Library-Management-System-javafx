@@ -1,7 +1,7 @@
 package com.library.librarymanagementsystem.controller;
 
 import com.library.librarymanagementsystem.dao.MemberDAO;
-import com.library.librarymanagementsystem.model.Member;
+import com.library.librarymanagementsystem.dto.MemberDTO; // Model එක වෙනුවට DTO එක
 import com.library.librarymanagementsystem.util.NavigationUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,16 +16,18 @@ import java.util.ResourceBundle;
 
 public class ViewMembersController implements Initializable {
 
-    @FXML private TableView<Member> membersTable;
-    @FXML private TableColumn<Member, String> colId;
-    @FXML private TableColumn<Member, String> colName;
-    @FXML private TableColumn<Member, String> colEmail;
-    @FXML private TableColumn<Member, String> colPhone;
-    @FXML private TableColumn<Member, String> colAddress;
-    @FXML private TableColumn<Member, String> colAction;
+    // TableView සහ TableColumn වල <Member> වෙනුවට <MemberDTO> දාන්න
+    @FXML private TableView<MemberDTO> membersTable;
+    @FXML private TableColumn<MemberDTO, String> colId;
+    @FXML private TableColumn<MemberDTO, String> colName;
+    @FXML private TableColumn<MemberDTO, String> colEmail;
+    @FXML private TableColumn<MemberDTO, String> colPhone;
+    @FXML private TableColumn<MemberDTO, String> colAddress;
+    @FXML private TableColumn<MemberDTO, String> colAction;
     @FXML private TextField searchField;
 
-    private final ObservableList<Member> members = FXCollections.observableArrayList();
+    // ObservableList එකත් MemberDTO කරන්න
+    private final ObservableList<MemberDTO> members = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -55,8 +57,9 @@ public class ViewMembersController implements Initializable {
             membersTable.setItems(members);
             return;
         }
-        ObservableList<Member> filtered = FXCollections.observableArrayList();
-        for (Member m : members) {
+        // Filtered List එකත් MemberDTO කරන්න
+        ObservableList<MemberDTO> filtered = FXCollections.observableArrayList();
+        for (MemberDTO m : members) {
             if (m.getName().toLowerCase().contains(query)
                     || m.getMemberId().toLowerCase().contains(query)
                     || m.getEmail().toLowerCase().contains(query)) {
@@ -68,7 +71,8 @@ public class ViewMembersController implements Initializable {
 
     @FXML
     public void handleEdit() {
-        Member selected = membersTable.getSelectionModel().getSelectedItem();
+        // Selected object එක MemberDTO කරන්න
+        MemberDTO selected = membersTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a member to edit.");
             return;
@@ -80,10 +84,18 @@ public class ViewMembersController implements Initializable {
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent() && !result.get().trim().isEmpty()) {
-            selected.setName(result.get().trim());
+
+            // MemberDTO එකේ නම වෙනස් කරන්න setter එකක් නැති නිසා අලුත් DTO එකක් හදනවා
+            MemberDTO updatedMember = new MemberDTO(
+                    selected.getMemberId(),
+                    result.get().trim(), // අලුත් නම
+                    selected.getEmail(),
+                    selected.getPhone(),
+                    selected.getAddress()
+            );
 
             MemberDAO memberDAO = new MemberDAO();
-            boolean success = memberDAO.updateMember(selected);
+            boolean success = memberDAO.updateMember(updatedMember);
 
             if (success) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Member updated successfully!");
@@ -96,7 +108,8 @@ public class ViewMembersController implements Initializable {
 
     @FXML
     public void handleDelete() {
-        Member selected = membersTable.getSelectionModel().getSelectedItem();
+        // Selected object එක MemberDTO කරන්න
+        MemberDTO selected = membersTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a member to delete.");
             return;
