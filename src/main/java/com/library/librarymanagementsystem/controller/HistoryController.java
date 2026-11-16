@@ -1,7 +1,7 @@
 package com.library.librarymanagementsystem.controller;
 
 import com.library.librarymanagementsystem.dao.BorrowDAO;
-import com.library.librarymanagementsystem.model.BorrowRecord;
+import com.library.librarymanagementsystem.dto.BorrowRecordDTO; // DTO එක import කළා
 import com.library.librarymanagementsystem.util.NavigationUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,16 +15,18 @@ import java.util.ResourceBundle;
 
 public class HistoryController implements Initializable {
 
-    @FXML private TableView<BorrowRecord> historyTable;
-    @FXML private TableColumn<BorrowRecord, String> colMemberId;
-    @FXML private TableColumn<BorrowRecord, String> colBookTitle;
-    @FXML private TableColumn<BorrowRecord, String> colIssueDate;
-    @FXML private TableColumn<BorrowRecord, String> colDueDate;
-    @FXML private TableColumn<BorrowRecord, String> colReturnDate;
-    @FXML private TableColumn<BorrowRecord, String> colStatus;
+    // <BorrowRecord> වෙනුවට <BorrowRecordDTO> දාන්න
+    @FXML private TableView<BorrowRecordDTO> historyTable;
+    @FXML private TableColumn<BorrowRecordDTO, String> colMemberId;
+    @FXML private TableColumn<BorrowRecordDTO, String> colBookTitle;
+    @FXML private TableColumn<BorrowRecordDTO, String> colIssueDate;
+    @FXML private TableColumn<BorrowRecordDTO, String> colDueDate;
+    @FXML private TableColumn<BorrowRecordDTO, String> colReturnDate;
+    @FXML private TableColumn<BorrowRecordDTO, String> colStatus;
     @FXML private TextField searchField;
 
-    private final ObservableList<BorrowRecord> records = FXCollections.observableArrayList();
+    // ObservableList එකත් BorrowRecordDTO කරන්න
+    private final ObservableList<BorrowRecordDTO> records = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -35,10 +37,9 @@ public class HistoryController implements Initializable {
         colReturnDate.setCellValueFactory(new PropertyValueFactory<>("returnDate"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        loadHistory(); // මේක initialize එක ඇතුලේ කතා කරනවා
+        loadHistory(); // Database එකෙන් load කරන method එක call කරන්න
     }
 
-    // මේ method එක initialize එකට පිටින් (class එක ඇතුලේ) තියෙන්න ඕනේ!
     private void loadHistory() {
         BorrowDAO dao = new BorrowDAO();
         records.clear();
@@ -53,8 +54,10 @@ public class HistoryController implements Initializable {
             historyTable.setItems(records);
             return;
         }
-        ObservableList<BorrowRecord> filtered = FXCollections.observableArrayList();
-        for (BorrowRecord r : records) {
+
+        // Filtered list එකත් BorrowRecordDTO කරන්න
+        ObservableList<BorrowRecordDTO> filtered = FXCollections.observableArrayList();
+        for (BorrowRecordDTO r : records) {
             if (r.getMemberId().toLowerCase().contains(query)
                     || r.getBookTitle().toLowerCase().contains(query)) {
                 filtered.add(r);
