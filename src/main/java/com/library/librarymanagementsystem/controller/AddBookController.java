@@ -1,7 +1,7 @@
 package com.library.librarymanagementsystem.controller;
 
 import com.library.librarymanagementsystem.dao.BookDAO;
-import com.library.librarymanagementsystem.model.Book;
+import com.library.librarymanagementsystem.dto.BookDTO; // Model එක වෙනුවට DTO එක import කළා
 import com.library.librarymanagementsystem.util.NavigationUtil;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -29,7 +29,7 @@ public class AddBookController implements Initializable {
 
     @FXML
     public void handleAddBook() {
-        //Validation
+        // Validation
         if (bookIdField.getText().isEmpty() || titleField.getText().isEmpty()
                 || authorField.getText().isEmpty() || categoryCombo.getValue() == null
                 || yearField.getText().isEmpty() || quantityField.getText().isEmpty()) {
@@ -37,7 +37,7 @@ public class AddBookController implements Initializable {
             return;
         }
 
-        int year,qty;
+        int year, qty;
 
         try {
             year = Integer.parseInt(yearField.getText().trim());
@@ -48,8 +48,8 @@ public class AddBookController implements Initializable {
             return;
         }
 
-        //Book object
-        Book book = new Book(
+        // Book object එක වෙනුවට BookDTO එකක් හදනවා
+        BookDTO book = new BookDTO(
                 bookIdField.getText().trim(),
                 titleField.getText().trim(),
                 authorField.getText().trim(),
@@ -58,17 +58,16 @@ public class AddBookController implements Initializable {
                 qty
         );
 
-        //Database save
+        // Database save
         BookDAO bookDAO = new BookDAO();
-        boolean success = bookDAO.addBook(book);
+        boolean success = bookDAO.addBook(book); // දැන් BookDTO එක pass කරනවා
 
         if (success){
-            showAlert(Alert.AlertType.INFORMATION,"Success","Book added sucessfully!");
+            showAlert(Alert.AlertType.INFORMATION,"Success","Book added successfully!");
             handleClear();
         }else {
             showAlert(Alert.AlertType.ERROR,"Error", "Failed to add book. Book ID may already exist.");
         }
-
     }
 
     @FXML
