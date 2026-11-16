@@ -1,7 +1,6 @@
 package com.library.librarymanagementsystem.dao;
 
-import com.library.librarymanagementsystem.Main;
-import com.library.librarymanagementsystem.model.Member;
+import com.library.librarymanagementsystem.dto.MemberDTO;
 import com.library.librarymanagementsystem.util.DatabaseUtil;
 
 import java.sql.Connection;
@@ -11,37 +10,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MemberDAO {
-    // 1.Membor added to data base mrthod
-    public boolean addMember(Member member){
-        String sql = "INSERT INTO members (member_id, name, email, phone, addresss)"
-                + "VALUES (?,?,?,?,?)"
 
-                try (Connection conn = DatabaseUtil.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql)) {
-                    ps.setString(1, member.getMemberId());
-                    ps.setString(2, member.getName());
-                    ps.setString(3, member.getEmail());
-                    ps.setString(4, member.getPhone());
-                    ps.setString(5, member.getAddress());
+    // 1. Member කෙනෙක් add කරන method එක (දැන් MemberDTO එකක් ගන්නවා)
+    public boolean addMember(MemberDTO member) {
+        String sql = "INSERT INTO members (member_id, name, email, phone, address) "
+                + "VALUES (?, ?, ?, ?, ?)";
 
-                    return ps.executeUpdate() > 0;
-                }catch (SQLException e){
-                    e.printStackTrace();
-                    return false;
-                }
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, member.getMemberId());
+            ps.setString(2, member.getName());
+            ps.setString(3, member.getEmail());
+            ps.setString(4, member.getPhone());
+            ps.setString(5, member.getAddress());
+
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    //All member method
-    public List<Member> getAllMembers(){
-        List<Member> members = new ArrayList<>();
+    // 2. හැම member කෙනෙක්ම ගන්න method එක (දැන් List<MemberDTO> එකක් return කරනවා)
+    public List<MemberDTO> getAllMembers() {
+        List<MemberDTO> members = new ArrayList<>();
         String sql = "SELECT * FROM members";
 
         try (Connection conn = DatabaseUtil.getConnection();
-            java.sql.Statement stmt = conn.createStatement();
-            java.sql.ResultSet rs = stmt.executeQuery(sql)){
+             java.sql.Statement stmt = conn.createStatement();
+             java.sql.ResultSet rs = stmt.executeQuery(sql)) {
 
-            while (rs.next()){
-                Member m = new Member(
+            while (rs.next()) {
+                MemberDTO m = new MemberDTO(
                         rs.getString("member_id"),
                         rs.getString("name"),
                         rs.getString("email"),
@@ -50,43 +50,43 @@ public class MemberDAO {
                 );
                 members.add(m);
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return members;
     }
 
-    //Member details update karana method
-    public boolean updateMember(Member member){
-        String sql = "UPDATE member SET name = ?, email = ?, phone = ?, address =?, " + "WHERE member_id = ?";
+    // 3. Member details update කරන method එක
+    public boolean updateMember(MemberDTO member) {
+        String sql = "UPDATE members SET name = ?, email = ?, phone = ?, address = ? WHERE member_id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1,member.getName());
-            ps.setString(2,member.getEmail());
-            ps.setString(3,member.getPhone());
-            ps.setString(4,member.getAddress());
-            ps.setString(5,member.getMemberId());
+            ps.setString(1, member.getName());
+            ps.setString(2, member.getEmail());
+            ps.setString(3, member.getPhone());
+            ps.setString(4, member.getAddress());
+            ps.setString(5, member.getMemberId());
 
             return ps.executeUpdate() > 0;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    //member delete method
-    public boolean deleteMember(String memberId){
+    // 4. Member delete කරන method එක
+    public boolean deleteMember(String memberId) {
         String sql = "DELETE FROM members WHERE member_id = ?";
 
         try (Connection conn = DatabaseUtil.getConnection();
-            PreparedStatement ps = conn.prepareStatement(sql)){
+             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1,memberId);
+            ps.setString(1, memberId);
 
-            return ps.executeUpdate() > 0
-        }catch (SQLException e) {
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
