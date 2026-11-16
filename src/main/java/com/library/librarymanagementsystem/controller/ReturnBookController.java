@@ -1,13 +1,15 @@
 package com.library.librarymanagementsystem.controller;
 
+import com.library.librarymanagementsystem.dao.BookDAO;
+import com.library.librarymanagementsystem.dto.BookDTO; // DTO එක
 import com.library.librarymanagementsystem.util.NavigationUtil;
-import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ReturnBookController implements Initializable {
@@ -23,12 +25,16 @@ public class ReturnBookController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        borrowedBookCombo.setItems(FXCollections.observableArrayList(
-                "B001 - Java Basics",
-                "B002 - DBMS Concepts",
-                "B003 - Computer Networks"
-        ));
         returnDatePicker.setValue(LocalDate.now());
+
+        // Database එකෙන් පොත් ටික ලෝඩ් කරන්න (දැන් List<BookDTO>)
+        BookDAO bookDAO = new BookDAO();
+        List<BookDTO> books = bookDAO.getAllBooks();
+
+        borrowedBookCombo.getItems().clear();
+        for (BookDTO b : books) {
+            borrowedBookCombo.getItems().add(b.getBookId() + " - " + b.getTitle());
+        }
     }
 
     @FXML
@@ -38,14 +44,12 @@ public class ReturnBookController implements Initializable {
             return;
         }
 
-        // Sample data (real application එකේ database එකෙන් load කරන්න)
         memberIdLabel.setText("M001");
         memberNameLabel.setText("Kamal Perera");
         bookTitleLabel.setText(borrowedBookCombo.getValue());
         borrowedDateLabel.setText("2024-01-15");
         dueDateLabel.setText("2024-01-29");
 
-        // Overdue status check
         LocalDate dueDate = LocalDate.of(2024, 1, 29);
         LocalDate today = LocalDate.now();
         if (today.isAfter(dueDate)) {
@@ -64,6 +68,7 @@ public class ReturnBookController implements Initializable {
             showAlert(Alert.AlertType.WARNING, "Validation", "Please load a book and select return date.");
             return;
         }
+
         showAlert(Alert.AlertType.INFORMATION, "Success", "Book returned successfully!");
         handleClear();
     }
